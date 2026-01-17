@@ -150,8 +150,8 @@ final class InformaticoCapellaCore
      */
     public function registerPostTypes(): void
     {
-        // Los CPTs se registrarán aquí
-        // Cada CPT tendrá su propia clase en src/Infrastructure/WordPress/PostTypes/
+        // Register Case Study CPT
+        \InformaticoCapella\Infrastructure\WordPress\RegisterCaseStudyCPT::register();
         
         /**
          * Hook para que otros componentes registren post types
