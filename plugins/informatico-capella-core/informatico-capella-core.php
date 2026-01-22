@@ -90,6 +90,9 @@ final class InformaticoCapellaCore
         add_action('init', [$this, 'registerPostTypes']);
         add_action('init', [$this, 'registerTaxonomies']);
 
+        // Registrar rutas REST API
+        add_action('rest_api_init', [$this, 'registerRestRoutes']);
+
         // Enqueue scripts y estilos
         add_action('wp_enqueue_scripts', [$this, 'enqueueScripts']);
         add_action('admin_enqueue_scripts', [$this, 'enqueueAdminScripts']);
@@ -174,6 +177,30 @@ final class InformaticoCapellaCore
          * @since 1.0.0
          */
         do_action('ic_core_register_taxonomies');
+    }
+
+    /**
+     * Registrar rutas REST API personalizadas
+     *
+     * @return void
+     */
+    public function registerRestRoutes(): void
+    {
+        // Register Case Study REST routes - manual include to avoid autoloader conflicts
+        require_once IC_CORE_PLUGIN_DIR . 'src/Presentation/REST/CaseStudyController.php';
+
+        if (class_exists('\InformaticoCapella\Presentation\REST\CaseStudyController')) {
+            \InformaticoCapella\Presentation\REST\CaseStudyController::register_routes();
+        } else {
+            error_log('InformaticoCapella: CaseStudyController class not found after manual include');
+        }
+
+        /**
+         * Hook para que otros componentes registren rutas REST
+         *
+         * @since 1.0.0
+         */
+        do_action('ic_core_register_rest_routes');
     }
 
     /**
